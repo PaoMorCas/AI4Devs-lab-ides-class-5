@@ -13,8 +13,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Candidate {
+  id         Int        @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  email      String     @unique
+  phone      String?
+  address    String?
+  education  Education[]
+  experience Experience[]
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  institution String
+  degree      String
+  startDate   DateTime
+  endDate     DateTime
+  description String?
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  candidateId Int
+}
+
+model Experience {
+  id             Int      @id @default(autoincrement())
+  company        String
+  position       String
+  startDate      DateTime
+  endDate        DateTime
+  responsibilities String
+  candidate      Candidate @relation(fields: [candidateId], references: [id])
+  candidateId    Int
 }
